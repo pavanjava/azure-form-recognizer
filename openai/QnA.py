@@ -9,6 +9,16 @@ from langchain import hub
 import os
 
 
+def preprocess(path):
+    import pandas as pd
+
+    df = pd.read_csv(filepath_or_buffer=path)
+    df.fillna(0.0, inplace=True)
+    df.to_csv(path)
+
+
+preprocess('../data/data-0.csv')
+
 MILVUS_HOST = 'localhost'
 MILVUS_PORT = '19530'
 
@@ -17,8 +27,8 @@ _ = load_dotenv(find_dotenv())
 # set `<your-endpoint>` and `<your-key>` variables with the values from the Azure portal
 openai_api_key = os.getenv("OPEN_API_KEY")
 
-# loader = DirectoryLoader('../data', glob='**/*.csv')
-loader = CSVLoader(file_path='../data/data-2.csv')
+loader = DirectoryLoader('../data', glob='**/*.csv')
+# loader = CSVLoader(file_path='../data/data-0.csv')
 documents = loader.load()
 
 splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
@@ -43,11 +53,5 @@ rag_chain = (
         | llm
 )
 
-response = rag_chain.invoke("")
+response = rag_chain.invoke("for the year ended 31, 2023 what is profit for the year and profit before tax in % ?")
 print(response)
-
-
-
-
-
-

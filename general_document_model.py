@@ -18,7 +18,7 @@ key = os.getenv("FORM_KEY")
 
 def analyze_general_documents():
     # real time financial report of honeywell
-    docUrl = "https://prod-edam.honeywell.com/content/dam/honeywell-edam/pmt/hps/products/pmc/modular-systems/masterlogic-plc/pmt-hps-master-logic-200-specifications-and-technical-data.pdf"
+    docUrl = "https://www.mitsubishicorp.com/jp/en/ir/library/earnings/pdf/202305e.pdf"
 
     # create your `DocumentAnalysisClient` instance and `AzureKeyCredential` variable
     document_analysis_client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
@@ -48,9 +48,9 @@ def analyze_general_documents():
                 fields.append(cell.content)
             if cell.kind == "content":
                 if cell.column_index == 0:
-                    row_data = [cell.content]
+                    row_data = [str(cell.content)]
                 else:
-                    row_data.append(cell.content)
+                    row_data.append(str(cell.content))
                 if curr_row_index != row_shift_index:
                     row_shift_index = curr_row_index
                     rows.append(row_data)
